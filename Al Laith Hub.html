@@ -1,0 +1,940 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Al Laith Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg:#f0f2f7;--surface:#ffffff;--surface2:#f8f9fc;
+  --sidebar-bg:#18233a;--sidebar-hover:rgba(255,255,255,.06);--sidebar-active:#243352;
+  --sidebar-text:#7a8fb3;--sidebar-text-active:#ffffff;
+  --fg:#1a2237;--fg-muted:#64748b;--border:#e2e8f0;
+  --accent:#2563eb;--accent-light:#eff6ff;
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;
+  font-family:'Inter',system-ui,sans-serif;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1525;--surface:#1a2237;--surface2:#141d32;
+  --sidebar-bg:#0a0f1e;--sidebar-active:#1a2540;
+  --sidebar-text:#4d6080;--sidebar-text-active:#e2e8f0;
+  --fg:#e2e8f0;--fg-muted:#94a3b8;--border:#263450;
+  --accent:#3b82f6;--accent-light:#1e2d4d;
+  --green:#10b981;--amber:#f59e0b;--red:#f87171;color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f1525;--surface:#1a2237;--surface2:#141d32;
+  --sidebar-bg:#0a0f1e;--sidebar-active:#1a2540;
+  --sidebar-text:#4d6080;--sidebar-text-active:#e2e8f0;
+  --fg:#e2e8f0;--fg-muted:#94a3b8;--border:#263450;
+  --accent:#3b82f6;--accent-light:#1e2d4d;
+  --green:#10b981;--amber:#f59e0b;--red:#f87171;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:0;overflow:hidden}
+body{background:var(--bg);color:var(--fg);display:flex;height:100%}
+
+.sidebar{width:228px;min-width:228px;background:var(--sidebar-bg);display:flex;flex-direction:column;overflow-y:auto}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-brand{font-size:13px;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase}
+.sb-sub{font-size:11px;color:var(--sidebar-text);margin-top:2px}
+.sb-label{font-size:10px;font-weight:600;color:var(--sidebar-text);letter-spacing:.1em;text-transform:uppercase;padding:16px 16px 6px}
+.sb-item{display:flex;align-items:center;gap:8px;padding:7px 16px;font-size:13px;font-weight:500;color:var(--sidebar-text);cursor:pointer;transition:background .12s,color .12s;user-select:none}
+.sb-item:hover{background:var(--sidebar-hover);color:var(--sidebar-text-active)}
+.sb-item.active{background:var(--sidebar-active);color:var(--sidebar-text-active)}
+.sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sb-count{margin-left:auto;font-size:11px;background:rgba(255,255,255,.08);color:var(--sidebar-text);border-radius:10px;padding:1px 7px;font-variant-numeric:tabular-nums}
+.sb-divider{height:1px;background:rgba(255,255,255,.06);margin:6px 0}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:50px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.topbar-title{font-size:15px;font-weight:600}
+.topbar-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:inherit;transition:opacity .12s;white-space:nowrap}
+.btn:hover{opacity:.85}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-ghost{background:transparent;color:var(--fg-muted);border:1px solid var(--border)}
+.view-tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;flex-shrink:0}
+.vtab{padding:10px 14px;font-size:13px;font-weight:500;color:var(--fg-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s,border-color .12s;user-select:none}
+.vtab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.content{flex:1;overflow-y:auto;padding:18px 20px}
+
+.section-hdr{display:flex;align-items:center;gap:8px;padding:10px 0 8px;cursor:pointer;user-select:none}
+.chevron{width:14px;height:14px;color:var(--fg-muted);flex-shrink:0;transition:transform .15s}
+.section-block.col .chevron{transform:rotate(-90deg)}
+.section-name{font-size:13px;font-weight:600;flex:1}
+.section-cnt{font-size:11px;color:var(--fg-muted);font-variant-numeric:tabular-nums}
+.task-list{margin-left:22px;border-left:1px solid var(--border)}
+.section-block.col .task-list{display:none}
+
+.task-row{display:flex;align-items:flex-start;gap:10px;padding:7px 10px 7px 14px;cursor:pointer;border-radius:6px;transition:background .1s}
+.task-row:hover{background:var(--surface)}
+.task-row.sel{background:var(--accent-light)}
+.chk{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;margin-top:2px;cursor:pointer;transition:border-color .12s,background .12s;display:flex;align-items:center;justify-content:center}
+.chk:hover{border-color:var(--accent)}
+.chk.done{background:var(--green);border-color:var(--green)}
+.chk.done::after{content:'';width:6px;height:4px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px);display:block}
+.task-body{flex:1;min-width:0}
+.task-name{font-size:13px;font-weight:500;line-height:1.4}
+.task-name.struck{text-decoration:line-through;color:var(--fg-muted)}
+.task-meta{display:flex;align-items:center;gap:8px;margin-top:3px;flex-wrap:wrap}
+.avatar{width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.task-owner-txt{font-size:11px;color:var(--fg-muted)}
+.task-due{font-size:11px;color:var(--fg-muted)}
+.task-due.late{color:var(--red)}
+.add-row{display:flex;align-items:center;gap:10px;padding:6px 10px 6px 14px;border-radius:6px;color:var(--fg-muted);font-size:13px;cursor:pointer;transition:background .1s,color .1s}
+.add-row:hover{background:var(--surface);color:var(--accent)}
+
+.detail{width:370px;min-width:370px;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:width .2s ease,min-width .2s ease,opacity .2s}
+.detail.closed{width:0;min-width:0;opacity:0;pointer-events:none}
+.panel-hdr{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:8px}
+.panel-close{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--fg-muted);font-size:18px;line-height:1;padding:0;font-family:inherit;flex-shrink:0}
+.panel-title{font-size:15px;font-weight:600;flex:1;line-height:1.3}
+.panel-body{padding:14px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px}
+.field-row{display:flex;align-items:flex-start;gap:10px}
+.field-lbl{font-size:11px;font-weight:600;color:var(--fg-muted);letter-spacing:.05em;text-transform:uppercase;width:72px;flex-shrink:0;padding-top:2px}
+.field-val{flex:1;font-size:13px;color:var(--fg);min-width:0}
+.field-notes{font-size:13px;color:var(--fg);line-height:1.6;white-space:pre-wrap}
+.sbadge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500}
+.badge-open{background:var(--accent-light);color:var(--accent)}
+.badge-done{background:#d1fae5;color:#065f46}
+
+.table-wrap{background:var(--surface);border-radius:8px;border:1px solid var(--border);overflow:hidden}
+.tbl-hdr,.tbl-row{display:grid;grid-template-columns:1fr 130px 100px 90px;gap:8px;align-items:center}
+.tbl-hdr{padding:9px 14px;background:var(--surface2);font-size:11px;font-weight:600;color:var(--fg-muted);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.tbl-row{padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.tbl-row:last-child{border-bottom:none}
+.tbl-row:hover{background:var(--surface2)}
+.tbl-task-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbl-task-name.struck{text-decoration:line-through;color:var(--fg-muted)}
+
+/* ── CASH FLOW VIEW ── */
+.stat-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat-tile{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.stat-label{font-size:11px;font-weight:600;color:var(--fg-muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+.stat-value{font-size:22px;font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums;line-height:1.1}
+.stat-sub{font-size:12px;color:var(--fg-muted);margin-top:4px}
+.stat-tile.good .stat-value{color:var(--green)}
+.stat-tile.warn .stat-value{color:var(--amber)}
+.stat-tile.bad .stat-value{color:var(--red)}
+
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.chart-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.chart-sub{font-size:12px;color:var(--fg-muted);margin-bottom:14px}
+.chart-legend{display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg-muted)}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+.chart-wrap{position:relative;width:100%;overflow:hidden}
+.chart-svg{display:block;width:100%}
+.chart-tooltip{position:absolute;background:var(--fg);color:var(--bg);padding:8px 12px;border-radius:6px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .12s;white-space:nowrap;z-index:10;line-height:1.6}
+
+.resources-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.resources-hdr{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.resource-item{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);text-decoration:none;color:var(--fg);transition:background .1s}
+.resource-item:last-child{border-bottom:none}
+.resource-item:hover{background:var(--surface2)}
+.resource-icon{width:32px;height:32px;border-radius:6px;background:#fce8e6;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.resource-name{font-size:13px;font-weight:500;flex:1}
+.resource-date{font-size:11px;color:var(--fg-muted)}
+.resource-badge{font-size:10px;font-weight:600;background:var(--accent-light);color:var(--accent);padding:2px 7px;border-radius:10px}
+.resource-ext{font-size:11px;color:var(--fg-muted)}
+
+/* cash balance view */
+.balance-chart-wrap{position:relative;width:100%;overflow:hidden}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:center;justify-content:center}
+.overlay[hidden]{display:none!important}
+.modal{background:var(--surface);border-radius:10px;width:460px;max-width:calc(100vw - 32px);padding:22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal-title{font-size:15px;font-weight:600}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fl{font-size:12px;font-weight:500;color:var(--fg-muted)}
+.fi,.fs,.fta{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:13px;color:var(--fg);font-family:inherit;outline:none;transition:border-color .12s;width:100%}
+.fi:focus,.fs:focus,.fta:focus{border-color:var(--accent)}
+.fta{min-height:72px;resize:vertical}
+.modal-btns{display:flex;justify-content:flex-end;gap:8px}
+
+@media(max-width:680px){
+  .sidebar{display:none}
+  .detail{display:none}
+  .tbl-hdr,.tbl-row{grid-template-columns:1fr 80px 80px}
+  .tbl-hdr>:last-child,.tbl-row>:last-child{display:none}
+  .stat-tiles{grid-template-columns:1fr 1fr}
+}
+</style>
+
+<div class="sidebar" id="sb"></div>
+<div class="main" id="main">
+  <div class="topbar">
+    <span class="topbar-title" id="topbarTitle">Dashboard</span>
+    <div class="topbar-actions">
+      <button class="btn btn-primary" id="addTaskBtn" onclick="openAddModal()">+ Add Task</button>
+    </div>
+  </div>
+  <div class="view-tabs" id="viewTabs"></div>
+  <div class="content" id="content"></div>
+</div>
+<div class="detail closed" id="detailPanel">
+  <div class="panel-hdr">
+    <div class="panel-title" id="panelTitle"></div>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+</div>
+<div class="overlay" id="modalOverlay" hidden>
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+// ── SEED DATA ──────────────────────────────────────────────────────────────
+const SEED = {
+  projects:[
+    {
+      id:'exco-fin',name:'EXCO — Financial',color:'#2563eb',
+      sections:[
+        {id:'fin-1',name:'1. Cash Flow — Inflows (15 min)',tasks:[
+          {id:'f1a',name:'PA UAE inflow update',owner:'John',status:'open',due:'2026-10-23',notes:'Update only required where we expect to miss target.'},
+          {id:'f1b',name:'PA Oman inflow update',owner:'John',status:'open',due:'2026-10-23',notes:''},
+          {id:'f1c',name:'Oman O&G inflow update',owner:'John',status:'open',due:'2026-10-23',notes:''},
+          {id:'f1d',name:'SS UAE inflow update',owner:'John',status:'open',due:'2026-10-23',notes:''},
+          {id:'f1e',name:'SS KSA inflow update',owner:'John',status:'open',due:'2026-10-23',notes:''},
+          {id:'f1f',name:'Events UAE inflow update',owner:'Mike',status:'open',due:'2026-10-23',notes:''},
+          {id:'f1g',name:'Events KSA inflow update',owner:'Mike',status:'open',due:'2026-10-23',notes:''},
+          {id:'f1h',name:'Construction Uzbekistan inflow update',owner:'Mike',status:'open',due:'2026-10-23',notes:''},
+          {id:'f1i',name:'Mast Climbers inflow update',owner:'Mike',status:'open',due:'2026-10-23',notes:''},
+        ]},
+        {id:'fin-2',name:'2. Cash Flow — Outflows (5 min)',tasks:[
+          {id:'f2a',name:'Share projected outflow & flag unexpected expenses',owner:'James',status:'open',due:'2026-10-23',notes:'Focus on unexpected costs only — what they are and why they were not forecasted.'},
+        ]},
+        {id:'fin-3',name:'3. Revenue to Budget (10 min)',tasks:[
+          {id:'f3a',name:'Sales & Rental variations to budget',owner:'John',status:'open',due:'2026-10-23',notes:'Report variation only — no update needed if on track.'},
+          {id:'f3b',name:'EPC variations to budget',owner:'Mike',status:'open',due:'2026-10-23',notes:'Report variation only — no update needed if on track.'},
+        ]},
+        {id:'fin-4',name:'4. CapEx / Special Projects (5 min)',tasks:[
+          {id:'f4a',name:'Share high-level CapEx opportunities',owner:'John',status:'open',due:'2026-10-23',notes:'New opportunities for the week; status update on approved projects.'},
+        ]},
+        {id:'fin-5',name:'5. Action Items & Follow-ups (5 min)',tasks:[
+          {id:'f5a',name:'Review previous week\'s actions',owner:'John',status:'open',due:'2026-10-23',notes:'Confirm owner has completed or provide updated status. Re-assign or extend due date if required. Capture new actions before close.'},
+        ]},
+      ]
+    },
+    {
+      id:'exco-ops',name:'EXCO — Operational',color:'#7c3aed',
+      sections:[
+        {id:'ops-1',name:'1. Weekly Team Pulse (10 min)',tasks:[
+          {id:'o1a',name:'Team check-in — wins & blockers this week',owner:'John',status:'open',due:null,notes:'Each department head shares one win and one blocker.'},
+        ]},
+        {id:'ops-2',name:'2. Operational Updates (25 min)',tasks:[
+          {id:'o2a',name:'Projects status update',owner:'Raiken',status:'open',due:null,notes:''},
+          {id:'o2b',name:'Safety & compliance update',owner:'James',status:'open',due:null,notes:''},
+          {id:'o2c',name:'HR & people update',owner:'John',status:'open',due:null,notes:''},
+        ]},
+        {id:'ops-3',name:'3. Issues & Escalations (15 min)',tasks:[
+          {id:'o3a',name:'Open issues requiring EXCO decision',owner:'John',status:'open',due:null,notes:'Escalations only — issues that cannot be resolved at department level.'},
+        ]},
+        {id:'ops-4',name:'4. Action Items & Follow-ups (10 min)',tasks:[
+          {id:'o4a',name:'Review previous week\'s actions',owner:'John',status:'open',due:null,notes:''},
+        ]},
+      ]
+    },
+    {
+      id:'1on1-joe',name:'Joe Prepok',type:'1on1',role:'PA Ops Manager',color:'#0891b2',
+      sections:[
+        {id:'jp-1',name:'1. Check-In (5 min)',tasks:[
+          {id:'jp1a',name:'Life score check-in — how are you really doing? (1-10)',owner:'Joe',status:'open',due:null,notes:'What is your life score?\nThis is about the whole person, not just work.'},
+        ]},
+        {id:'jp-2',name:'2. Progress on Priorities (10 min)',tasks:[
+          {id:'jp2a',name:'Hire Desk Process — this process needs a lead',owner:'Joe',status:'open',due:null,notes:'Who is driving this? Confirm lead and next milestone.'},
+          {id:'jp2b',name:'Re-fleeting — 9 units per quarter',owner:'Joe',status:'open',due:null,notes:'Progress on fleet renewal. Are we on track for 9 units this quarter?'},
+          {id:'jp2c',name:'Demand — fill demand',owner:'Joe',status:'open',due:null,notes:'Pipeline and demand generation update.'},
+        ]},
+        {id:'jp-3',name:'3. Blockers & Support (10 min)',tasks:[
+          {id:'jp3a',name:"Joe's complete re-location",owner:'Joe',status:'open',due:null,notes:'What support is needed? Is there anything holding this up?'},
+          {id:'jp3b',name:'Clear strategy for the Powered Access Business',owner:'Joe',status:'open',due:null,notes:'What decisions are outstanding? What does Joe need from leadership?'},
+        ]},
+        {id:'jp-4',name:'4. Development & Growth (10 min)',tasks:[
+          {id:'jp4a',name:'Career goals & skills development check-in',owner:'Joe',status:'open',due:null,notes:'Career goals and skills development — where does Joe want to go?'},
+          {id:'jp4b',name:'Two-way feedback',owner:'Joe',status:'open',due:null,notes:'Feedback from manager to Joe AND from Joe to manager.'},
+        ]},
+        {id:'jp-5',name:'5. Upcoming Focus (5 min)',tasks:[
+          {id:'jp5a',name:'Confirm top 3 priorities for the week ahead',owner:'Joe',status:'open',due:null,notes:'What are the three things Joe will focus on before the next 1-on-1?'},
+        ]},
+        {id:'jp-actions',name:'Action Items',tasks:[
+          {id:'jpa1',name:'Solution for hire desk manager — Spec JD, send to HR for CVs',owner:'John',status:'open',due:'2026-05-25',notes:'Overdue. Spec JD needs to be drafted and sent to HR.'},
+          {id:'jpa2',name:'Find solution / person to focus on machine sales and new machine solutions',owner:'John',status:'open',due:'2026-06-30',notes:'Overdue. Identify candidate or solution.'},
+          {id:'jpa3',name:'Succession Planning for all employees (Roopesh, Binil, Vince, Joe)',owner:'John',status:'open',due:'2026-06-30',notes:'Overdue. Formal succession plans for key people.'},
+          {id:'jpa4',name:"Quotes coming into info@allaith.com — are these feeding into HD / CRM?",owner:'Joe',status:'open',due:'2026-08-10',notes:'Overdue. Confirm routing and process for inbound quote requests.'},
+          {id:'jpa5',name:'OMAN — Actions and next steps',owner:'Joe',status:'open',due:'2026-06-21',notes:'Overdue. Oman operations next steps to be defined.'},
+          {id:'jpa6',name:'G40 Annual Conference — Al Laith Content: nominate one team member with a strong story + one client for filmed testimonial',owner:'Joe',status:'open',due:'2026-09-08',notes:'Overdue. Joe to identify team member and client partner willing to participate.'},
+          {id:'jpa7',name:'Operational Manager Spec',owner:'John',status:'open',due:'2026-08-07',notes:'Overdue. Spec document for Operational Manager role.'},
+          {id:'jpa8',name:'Airport Breakdowns — comms and remedial actions (Joe to pick up with Mike)',owner:'Joe',status:'done',due:'2026-05-18',notes:'Closed 22 Jun 2026.'},
+          {id:'jpa9',name:'Pricing app — where sales team can load any pricing challenges (competitors, price, customer)',owner:'John',status:'done',due:'2026-05-18',notes:'Closed 22 Jun 2026.'},
+          {id:'jpa10',name:'Work through Safety Manager Support',owner:'Joe',status:'done',due:'2026-05-18',notes:'Closed 7 Sep 2026.'},
+          {id:'jpa11',name:'Frank to share price comparison for Acumatica',owner:'Frank',status:'done',due:'2026-06-05',notes:'Closed 7 Sep 2026.'},
+          {id:'jpa12',name:"Send sales machines (photo's) to Johan",owner:'John',status:'done',due:'2026-06-02',notes:'Closed 5 Oct 2026.'},
+        ]},
+      ]
+    },
+    {
+      id:'1on1-jason',name:'Jason English',type:'1on1',role:'CEO',color:'#dc2626',
+      sections:[
+        {id:'je-1',name:'1. Check-In (5 min)',tasks:[
+          {id:'je1a',name:'Life score check-in — how are you really doing? (1-10)',owner:'Jason',status:'open',due:null,notes:'What is your life score?'},
+        ]},
+        {id:'je-2',name:'2. Progress on Priorities (10 min)',tasks:[
+          {id:'je2a',name:'Add priorities from last session',owner:'Jason',status:'open',due:null,notes:'What got done last week? What did not — and why?'},
+        ]},
+        {id:'je-3',name:'3. Blockers & Support (10 min)',tasks:[
+          {id:'je3a',name:'Add blockers from last session',owner:'Jason',status:'open',due:null,notes:"What's in the way? How can the manager help?"},
+        ]},
+        {id:'je-4',name:'4. Development & Growth (10 min)',tasks:[
+          {id:'je4a',name:'Career goals & skills development check-in',owner:'Jason',status:'open',due:null,notes:''},
+          {id:'je4b',name:'Two-way feedback',owner:'Jason',status:'open',due:null,notes:''},
+        ]},
+        {id:'je-5',name:'5. Upcoming Focus (5 min)',tasks:[
+          {id:'je5a',name:'Confirm top 3 priorities for the week ahead',owner:'Jason',status:'open',due:null,notes:''},
+        ]},
+        {id:'je-actions',name:'Action Items',tasks:[]},
+      ]
+    },
+    {
+      id:'1on1-vincent',name:'Vincent Nibbering',type:'1on1',role:'SS Ops Manager',color:'#7c3aed',
+      sections:[
+        {id:'vn-1',name:'1. Check-In (5 min)',tasks:[
+          {id:'vn1a',name:'Life score check-in — how are you really doing? (1-10)',owner:'Vincent',status:'open',due:null,notes:''},
+        ]},
+        {id:'vn-2',name:'2. Progress on Priorities (10 min)',tasks:[
+          {id:'vn2a',name:'Add priorities from last session',owner:'Vincent',status:'open',due:null,notes:''},
+        ]},
+        {id:'vn-3',name:'3. Blockers & Support (10 min)',tasks:[
+          {id:'vn3a',name:'Add blockers from last session',owner:'Vincent',status:'open',due:null,notes:''},
+        ]},
+        {id:'vn-4',name:'4. Development & Growth (10 min)',tasks:[
+          {id:'vn4a',name:'Career goals & skills development check-in',owner:'Vincent',status:'open',due:null,notes:''},
+          {id:'vn4b',name:'Two-way feedback',owner:'Vincent',status:'open',due:null,notes:''},
+        ]},
+        {id:'vn-5',name:'5. Upcoming Focus (5 min)',tasks:[
+          {id:'vn5a',name:'Confirm top 3 priorities for the week ahead',owner:'Vincent',status:'open',due:null,notes:''},
+        ]},
+        {id:'vn-actions',name:'Action Items',tasks:[]},
+      ]
+    },
+    {
+      id:'1on1-shanu',name:'Shanu Halankar',type:'1on1',role:'Branch Manager Oman',color:'#059669',
+      sections:[
+        {id:'sh-1',name:'1. Check-In (5 min)',tasks:[
+          {id:'sh1a',name:'Life score check-in — how are you really doing? (1-10)',owner:'Shanu',status:'open',due:null,notes:''},
+        ]},
+        {id:'sh-2',name:'2. Progress on Priorities (10 min)',tasks:[
+          {id:'sh2a',name:'Add priorities from last session',owner:'Shanu',status:'open',due:null,notes:''},
+        ]},
+        {id:'sh-3',name:'3. Blockers & Support (10 min)',tasks:[
+          {id:'sh3a',name:'Add blockers from last session',owner:'Shanu',status:'open',due:null,notes:''},
+        ]},
+        {id:'sh-4',name:'4. Development & Growth (10 min)',tasks:[
+          {id:'sh4a',name:'Career goals & skills development check-in',owner:'Shanu',status:'open',due:null,notes:''},
+          {id:'sh4b',name:'Two-way feedback',owner:'Shanu',status:'open',due:null,notes:''},
+        ]},
+        {id:'sh-5',name:'5. Upcoming Focus (5 min)',tasks:[
+          {id:'sh5a',name:'Confirm top 3 priorities for the week ahead',owner:'Shanu',status:'open',due:null,notes:''},
+        ]},
+        {id:'sh-actions',name:'Action Items',tasks:[]},
+      ]
+    },
+    {
+      id:'team-pulse',name:'Weekly Team Pulse',color:'#059669',
+      sections:[
+        {id:'tp-1',name:'1. Check-in (5 min)',tasks:[
+          {id:'t1a',name:'Round-table: one win from the week',owner:'John',status:'open',due:null,notes:'Quick, energising opener — keep to one sentence each.'},
+        ]},
+        {id:'tp-2',name:'2. Priority Review (20 min)',tasks:[
+          {id:'t2a',name:'Review top 3 priorities for the week ahead',owner:'John',status:'open',due:null,notes:''},
+          {id:'t2b',name:'Confirm resource allocation & blockers',owner:'John',status:'open',due:null,notes:''},
+        ]},
+        {id:'tp-3',name:'3. Open Floor (15 min)',tasks:[
+          {id:'t3a',name:'Team-submitted agenda items',owner:'John',status:'open',due:null,notes:'Items added by team before the meeting go here.'},
+        ]},
+        {id:'tp-4',name:'4. Actions & Close (10 min)',tasks:[
+          {id:'t4a',name:'Confirm actions — owner + due date for each',owner:'John',status:'open',due:null,notes:''},
+        ]},
+      ]
+    },
+  ]
+};
+
+// ── CASH FLOW DATA (sourced from ALG Cash Flow Forecast 13-10-2026) ────────
+const CF = {
+  months:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  // AED thousands — actuals Jan–Sep, Oct–Dec forecast
+  inflows:  [37129,28793,25533,25223,21101,22905,17188,21694,26765,23568,20790,22107],
+  outflows: [31284,44596,24534,21816,22721,18743,20284,17112,27295,34745,33128,35663],
+  balance:  [78268,62465,63465,66872,65251,69413,66317,70899,70368,59191,32742,19186],
+  // Oct onwards = forecast
+  forecastFrom: 9,
+  reportDate: '13 Oct 2026',
+  cashPosition: 70.4,
+  availableCash: 62.9,
+  octCollected: 13.1,
+  octTarget: 26.0,
+  totalReceivables: 32.6,
+  overdueReceivables: 18.9,
+};
+
+// ── DRIVE RESOURCES ────────────────────────────────────────────────────────
+const DRIVE_FILES = [
+  {title:'ALG Cash Flow Forecast 2026 (13-10-2026)',date:'13 Oct 2026',url:'https://drive.google.com/file/d/1TMcm1J-yB4bAQILaH1sn9LL0_t-w0gmN/view',latest:true},
+  {title:'ALG Cash Flow Forecast 2026 (06-10-2026)',date:'6 Oct 2026',url:'https://drive.google.com/file/d/1FwMN5dtitcIFwIcVHc4tZt5P0myhJuEB/view',latest:false},
+  {title:'ALG Cash Flow Forecast 2026 (30-09-2026)',date:'30 Sep 2026',url:'https://drive.google.com/file/d/17ef1-GJ5lHhhniLko_ouclhT69KZzDKx/view',latest:false},
+  {title:'ALG Cash Flow Forecast 2026 (14-07-2026)',date:'14 Jul 2026',url:'https://drive.google.com/file/d/1nm72_4D_oSNeFca99F4txOLf3lt_ruWZ/view',latest:false},
+  {title:'ALG Cash Flow Forecast 2026 (07-07-2026)',date:'7 Jul 2026',url:'https://drive.google.com/file/d/16_8kePOjuT9N4bYGYgDwaMNA4KHutDf4/view',latest:false},
+];
+const DRIVE_FOLDER = 'https://drive.google.com/drive/folders/1tgGXQpO-eZjQe8pV0noTF8uch8VDXGT1';
+
+const OWNERS = {
+  'John':['#2563eb','JM'],
+  'Mike':['#7c3aed','MC'],
+  'James':['#0891b2','JF'],
+  'Raiken':['#059669','RE'],
+  'Michael':['#d97706','MK'],
+  'Joe':['#0891b2','JP'],
+  'Vincent':['#7c3aed','VN'],
+  'Jason':['#dc2626','JE'],
+  'Shanu':['#059669','SH'],
+  'Frank':['#d97706','FK'],
+};
+function avatarFor(name){
+  if(!name) return ['#94a3b8','?'];
+  const k = Object.keys(OWNERS).find(k=>name.toLowerCase().startsWith(k.toLowerCase()));
+  return k ? OWNERS[k] : ['#94a3b8', name.slice(0,2).toUpperCase()];
+}
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let DB;
+try { DB = JSON.parse(localStorage.getItem('allaith_hub_v4')) || null; } catch(e){ DB = null; }
+if (!DB) { DB = JSON.parse(JSON.stringify(SEED)); save(); }
+function save(){ try{ localStorage.setItem('allaith_hub_v4', JSON.stringify(DB)); }catch(e){} }
+
+let state = {
+  projectId: DB.projects[0].id,
+  view: 'list',
+  subview: 'list',  // list | cashflow | actions
+  filter: 'all',
+  selectedTaskId: null,
+};
+
+function project(){ return DB.projects.find(p=>p.id===state.projectId); }
+function allTasks(){
+  const tasks=[];
+  DB.projects.forEach(p=>p.sections.forEach(s=>s.tasks.forEach(t=>tasks.push({...t,_proj:p.name,_projId:p.id,_sec:s.name,_secId:s.id}))));
+  return tasks;
+}
+function findTask(id){
+  for(const p of DB.projects) for(const s of p.sections) for(const t of s.tasks) if(t.id===id) return {task:t,section:s,proj:p};
+  return null;
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function render(){
+  renderSidebar();
+  renderTabs();
+  renderContent();
+  const proj = project();
+  const titleMap = {list: proj?(proj.name):'', cashflow:'Cash Flow', actions:'Action Tracker'};
+  const mainTitle = state.view==='actions' ? 'Action Tracker' : titleMap[state.subview]||proj?.name||'';
+  document.getElementById('topbarTitle').innerHTML = proj?.type==='1on1'&&state.subview==='list'
+    ? `<span>${esc(proj.name)}</span><span style="font-size:12px;font-weight:400;color:var(--fg-muted);margin-left:8px">· ${esc(proj.role||'')}</span>`
+    : esc(mainTitle);
+  document.getElementById('addTaskBtn').style.display = (state.subview==='cashflow') ? 'none' : '';
+}
+
+function renderSidebar(){
+  const openCount = allTasks().filter(t=>t.status!=='done').length;
+  let html = `<div class="sb-logo"><div class="sb-brand">Al Laith</div><div class="sb-sub">Meeting Hub</div></div>`;
+  html += `<div class="sb-label">Views</div>`;
+  html += sbItem('actions','◈','Action Tracker',openCount);
+  html += `<div class="sb-divider"></div><div class="sb-label">Meetings</div>`;
+  DB.projects.filter(p=>!p.type).forEach(p=>{
+    const cnt = p.sections.reduce((a,s)=>a+s.tasks.filter(t=>t.status!=='done').length,0);
+    html += sbItem(p.id,'●',p.name,cnt,p.color);
+  });
+  html += `<div class="sb-divider"></div><div class="sb-label">1-on-1</div>`;
+  DB.projects.filter(p=>p.type==='1on1').forEach(p=>{
+    const cnt = p.sections.reduce((a,s)=>a+s.tasks.filter(t=>t.status!=='done').length,0);
+    html += `<div class="sb-item ${state.projectId===p.id&&state.view!=='actions'?'active':''}" onclick="selectNav('${p.id}')">
+      <div style="width:28px;height:28px;border-radius:50%;background:${p.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">${p.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+      <div style="flex:1;min-width:0;overflow:hidden">
+        <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px">${p.name}</div>
+        <div style="font-size:10px;color:var(--sidebar-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.role||''}</div>
+      </div>
+      ${cnt?`<span class="sb-count">${cnt}</span>`:''}
+    </div>`;
+  });
+  document.getElementById('sb').innerHTML = html;
+}
+
+function sbItem(id,icon,label,count,color){
+  const active = (id==='actions'&&state.view==='actions')||(id!=='actions'&&state.projectId===id&&state.view!=='actions');
+  const dot = color ? `<span class="sb-dot" style="background:${color}"></span>` : `<span style="font-size:13px;color:var(--sidebar-text)">${icon}</span>`;
+  return `<div class="sb-item ${active?'active':''}" onclick="selectNav('${id}')">${dot}<span style="flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${label}</span>${count?`<span class="sb-count">${count}</span>`:''}</div>`;
+}
+
+function selectNav(id){
+  if(id==='actions'){ state.view='actions'; state.subview='actions'; state.selectedTaskId=null; }
+  else { state.view='list'; state.projectId=id; state.subview='list'; state.selectedTaskId=null; }
+  render();
+}
+
+function renderTabs(){
+  const isFinancial = state.projectId==='exco-fin' && state.view!=='actions';
+  let tabs;
+  if(state.view==='actions'){
+    tabs=[{id:'all',label:'Open'},{id:'done',label:'Completed'},{id:'overdue',label:'Overdue'}];
+  } else if(isFinancial){
+    tabs=[{id:'list',label:'Agenda & Tasks'},{id:'cashflow',label:'Cash Flow'},{id:'actions',label:'Actions'}];
+  } else {
+    tabs=[{id:'list',label:'Agenda & Tasks'},{id:'actions',label:'Actions'}];
+  }
+  const html = tabs.map(t=>{
+    let active;
+    if(state.view==='actions') active = state.filter===t.id||(t.id==='all'&&state.filter==='all');
+    else active = state.subview===t.id;
+    return `<div class="vtab ${active?'active':''}" onclick="setTab('${t.id}')">${t.label}</div>`;
+  }).join('');
+  document.getElementById('viewTabs').innerHTML = html;
+}
+
+function setTab(id){
+  if(state.view==='actions'){ state.filter=id==='all'?'all':id; renderTabs(); renderContent(); return; }
+  if(id==='actions'&&state.view!=='actions'){ state.subview='actions'; render(); return; }
+  state.subview = id;
+  render();
+}
+
+function renderContent(){
+  if(state.view==='actions'||state.subview==='actions'){ renderActionsView(); return; }
+  if(state.subview==='cashflow'){ renderCashFlowView(); return; }
+  renderListView();
+}
+
+function renderListView(){
+  const proj = project(); if(!proj){ document.getElementById('content').innerHTML=''; return; }
+  let html = '';
+  proj.sections.forEach(sec=>{
+    const open = sec.tasks.filter(t=>t.status!=='done').length;
+    html += `<div class="section-block col" id="sb_${sec.id}">
+      <div class="section-hdr" onclick="toggleSection('${sec.id}')">
+        <svg class="chevron" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="section-name">${sec.name}</span>
+        <span class="section-cnt">${open}/${sec.tasks.length}</span>
+      </div>
+      <div class="task-list">`;
+    sec.tasks.forEach(t=>{ html += taskRowHtml(t); });
+    html += `<div class="add-row" onclick="openAddModal('${proj.id}','${sec.id}')"><span style="font-size:16px">＋</span> Add task</div>`;
+    html += `</div></div>`;
+  });
+  document.getElementById('content').innerHTML = html||'<div style="text-align:center;padding:48px;color:var(--fg-muted)">No sections yet</div>';
+}
+
+function taskRowHtml(t){
+  const done = t.status==='done';
+  const [ac,initials] = avatarFor(t.owner||'');
+  const late = !done && t.due && t.due < today();
+  const sel = t.id===state.selectedTaskId;
+  return `<div class="task-row ${sel?'sel':''}" id="tr_${t.id}" onclick="selectTask('${t.id}')">
+    <div class="chk ${done?'done':''}" onclick="toggleDone(event,'${t.id}')"></div>
+    <div class="task-body">
+      <div class="task-name ${done?'struck':''}">${esc(t.name)}</div>
+      <div class="task-meta">
+        ${t.owner?`<div style="display:flex;align-items:center;gap:4px"><div class="avatar" style="background:${ac}">${initials}</div><span class="task-owner-txt">${esc(t.owner)}</span></div>`:''}
+        ${t.due?`<span class="task-due ${late?'late':''}">${late?'Overdue · ':''}${fmtDate(t.due)}</span>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── CASH FLOW VIEW ─────────────────────────────────────────────────────────
+function renderCashFlowView(){
+  const octPct = Math.round((CF.octCollected/CF.octTarget)*100);
+  const html = `
+    <div class="stat-tiles">
+      <div class="stat-tile">
+        <div class="stat-label">Cash Position</div>
+        <div class="stat-value">AED ${CF.cashPosition}M</div>
+        <div class="stat-sub">Available: AED ${CF.availableCash}M (excl. VAT)</div>
+      </div>
+      <div class="stat-tile ${octPct<60?'warn':''}">
+        <div class="stat-label">Oct Collections</div>
+        <div class="stat-value">${octPct}%</div>
+        <div class="stat-sub">AED ${CF.octCollected}M of AED ${CF.octTarget}M target</div>
+      </div>
+      <div class="stat-tile bad">
+        <div class="stat-label">Receivables &gt;90 Days</div>
+        <div class="stat-value">AED ${CF.overdueReceivables}M</div>
+        <div class="stat-sub">of AED ${CF.totalReceivables}M total outstanding</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Report Date</div>
+        <div class="stat-value" style="font-size:16px">${CF.reportDate}</div>
+        <div class="stat-sub">Next update due weekly</div>
+      </div>
+    </div>
+    <div class="chart-card" id="barChartCard">
+      <div class="chart-title">Monthly Inflows vs Outflows — 2026</div>
+      <div class="chart-sub">AED thousands · Actuals Jan–Sep · Oct–Dec forecast</div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#2563eb"></div>Inflows</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Outflows</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e2e8f0;border:1px solid #94a3b8"></div>Forecast</div>
+      </div>
+      <div class="chart-wrap" id="barWrap">
+        <div class="chart-tooltip" id="barTip"></div>
+      </div>
+    </div>
+    <div class="chart-card" id="balanceChartCard">
+      <div class="chart-title">Closing Cash Balance — 2026</div>
+      <div class="chart-sub">AED thousands · Month-end position</div>
+      <div class="chart-wrap" id="balWrap">
+        <div class="chart-tooltip" id="balTip"></div>
+      </div>
+    </div>
+    <div class="resources-card">
+      <div class="resources-hdr">
+        📁 Cash Flow Reports
+        <a href="${DRIVE_FOLDER}" target="_blank" rel="noopener" style="margin-left:auto;font-size:12px;color:var(--accent);text-decoration:none;font-weight:400">Open folder ↗</a>
+      </div>
+      ${DRIVE_FILES.map(f=>`
+        <a class="resource-item" href="${f.url}" target="_blank" rel="noopener">
+          <div class="resource-icon">📄</div>
+          <div style="flex:1;min-width:0">
+            <div class="resource-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${f.title}</div>
+            <div class="resource-date">${f.date}</div>
+          </div>
+          ${f.latest?'<span class="resource-badge">Latest</span>':''}
+          <span class="resource-ext" style="margin-left:8px">PDF ↗</span>
+        </a>`).join('')}
+    </div>`;
+  document.getElementById('content').innerHTML = html;
+  setTimeout(()=>{ drawBarChart(); drawBalanceChart(); }, 50);
+}
+
+function drawBarChart(){
+  const wrap = document.getElementById('barWrap'); if(!wrap) return;
+  const W = wrap.clientWidth||600;
+  const H = 220;
+  const pad = {top:12,right:12,bottom:28,left:52};
+  const pw = W-pad.left-pad.right;
+  const ph = H-pad.top-pad.bottom;
+  const n = 12;
+  const groupW = pw/n;
+  const barW = Math.max(3, groupW*0.33);
+  const gap = barW*0.5;
+  const maxV = Math.max(...CF.inflows,...CF.outflows)*1.08;
+  const yScale = v=>(ph - (v/maxV)*ph);
+  const yTicks = [0,10000,20000,30000,40000];
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark' || (window.matchMedia('(prefers-color-scheme:dark)').matches && document.documentElement.getAttribute('data-theme')!=='light');
+  const gridC = isDark?'rgba(255,255,255,.08)':'rgba(0,0,0,.06)';
+  const textC = isDark?'#94a3b8':'#64748b';
+  const fgC = isDark?'#e2e8f0':'#1a2237';
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" class="chart-svg" style="overflow:visible">`;
+  // grid
+  yTicks.forEach(v=>{
+    const y = pad.top + yScale(v);
+    svg += `<line x1="${pad.left}" y1="${y}" x2="${pad.left+pw}" y2="${y}" stroke="${gridC}" stroke-width="1"/>`;
+    svg += `<text x="${pad.left-6}" y="${y+4}" font-size="10" text-anchor="end" fill="${textC}">${v>=1000?(v/1000)+'k':v}</text>`;
+  });
+  // bars
+  CF.months.forEach((m,i)=>{
+    const fc = i >= CF.forecastFrom;
+    const x = pad.left + i*groupW + groupW/2;
+    const xIn = x - gap/2 - barW;
+    const xOut = x + gap/2;
+    const hIn = (CF.inflows[i]/maxV)*ph;
+    const hOut = (CF.outflows[i]/maxV)*ph;
+    const yIn = pad.top + ph - hIn;
+    const yOut = pad.top + ph - hOut;
+    const inC = fc ? 'rgba(37,99,235,.35)' : '#2563eb';
+    const outC = fc ? 'rgba(245,158,11,.35)' : '#f59e0b';
+    svg += `<rect class="bar" x="${xIn}" y="${yIn}" width="${barW}" height="${hIn}" fill="${inC}" rx="2" data-tip="${m} Inflows: AED ${fmtK(CF.inflows[i])}${fc?' (forecast)':''}"/>`;
+    svg += `<rect class="bar" x="${xOut}" y="${yOut}" width="${barW}" height="${hOut}" fill="${outC}" rx="2" data-tip="${m} Outflows: AED ${fmtK(CF.outflows[i])}${fc?' (forecast)':''}"/>`;
+    // x label
+    svg += `<text x="${x}" y="${H-10}" font-size="10" text-anchor="middle" fill="${textC}">${m}</text>`;
+    // forecast indicator
+    if(i===CF.forecastFrom) svg += `<line x1="${x-groupW/2}" y1="${pad.top}" x2="${x-groupW/2}" y2="${pad.top+ph}" stroke="${gridC}" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+  });
+  svg += `<text x="${pad.left+pw*0.77}" y="${pad.top+14}" font-size="10" fill="${textC}">← forecast</text>`;
+  svg += '</svg>';
+  wrap.querySelector('.chart-tooltip') && (wrap.querySelector('.chart-tooltip').id = 'barTip');
+  const existing = wrap.querySelector('svg');
+  if(existing) existing.remove();
+  wrap.insertAdjacentHTML('afterbegin', svg);
+  addBarHover('barWrap','barTip');
+}
+
+function addBarHover(wrapId,tipId){
+  const wrap = document.getElementById(wrapId); if(!wrap) return;
+  const tip = document.getElementById(tipId); if(!tip) return;
+  wrap.querySelectorAll('.bar').forEach(bar=>{
+    bar.addEventListener('mouseenter',function(e){
+      tip.textContent = this.dataset.tip;
+      tip.style.opacity='1';
+    });
+    bar.addEventListener('mousemove',function(e){
+      const r = wrap.getBoundingClientRect();
+      let x = e.clientX-r.left+12, y = e.clientY-r.top-36;
+      if(x+160>r.width) x = e.clientX-r.left-160;
+      tip.style.left=x+'px'; tip.style.top=y+'px';
+    });
+    bar.addEventListener('mouseleave',()=>{ tip.style.opacity='0'; });
+  });
+}
+
+function drawBalanceChart(){
+  const wrap = document.getElementById('balWrap'); if(!wrap) return;
+  const W = wrap.clientWidth||600;
+  const H = 160;
+  const pad = {top:12,right:12,bottom:28,left:52};
+  const pw = W-pad.left-pad.right;
+  const ph = H-pad.top-pad.bottom;
+  const n = 12;
+  const minV = 0;
+  const maxV = Math.max(...CF.balance)*1.1;
+  const xOf = i => pad.left + (i/(n-1))*pw;
+  const yOf = v => pad.top + ph - ((v-minV)/(maxV-minV))*ph;
+
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark' || (window.matchMedia('(prefers-color-scheme:dark)').matches && document.documentElement.getAttribute('data-theme')!=='light');
+  const gridC = isDark?'rgba(255,255,255,.08)':'rgba(0,0,0,.06)';
+  const textC = isDark?'#94a3b8':'#64748b';
+  const fgC = isDark?'#e2e8f0':'#1a2237';
+  const accentC = '#2563eb';
+
+  const yTicks = [0,20000,40000,60000,80000];
+  let svg = `<svg viewBox="0 0 ${W} ${H}" class="chart-svg" style="overflow:visible">`;
+  yTicks.forEach(v=>{
+    const y = yOf(v);
+    svg += `<line x1="${pad.left}" y1="${y}" x2="${pad.left+pw}" y2="${y}" stroke="${gridC}" stroke-width="1"/>`;
+    svg += `<text x="${pad.left-6}" y="${y+4}" font-size="10" text-anchor="end" fill="${textC}">${v>=1000?(v/1000)+'k':v}</text>`;
+  });
+
+  // forecast divider
+  const fcX = xOf(CF.forecastFrom);
+  svg += `<line x1="${fcX}" y1="${pad.top}" x2="${fcX}" y2="${pad.top+ph}" stroke="${gridC}" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+  svg += `<text x="${fcX+4}" y="${pad.top+12}" font-size="10" fill="${textC}">forecast</text>`;
+
+  // area fill: actual part
+  const actPts = CF.balance.slice(0, CF.forecastFrom+1).map((v,i)=>`${xOf(i)},${yOf(v)}`).join(' ');
+  const actAreaPts = actPts + ` ${xOf(CF.forecastFrom)},${yOf(0)} ${xOf(0)},${yOf(0)}`;
+  svg += `<polygon points="${actAreaPts}" fill="rgba(37,99,235,.1)"/>`;
+
+  // forecast area
+  const fcPts = CF.balance.slice(CF.forecastFrom).map((v,i)=>`${xOf(CF.forecastFrom+i)},${yOf(v)}`).join(' ');
+  const fcAreaPts = fcPts + ` ${xOf(11)},${yOf(0)} ${xOf(CF.forecastFrom)},${yOf(0)}`;
+  svg += `<polygon points="${fcAreaPts}" fill="rgba(37,99,235,.05)"/>`;
+
+  // line actual
+  const lineAct = CF.balance.slice(0, CF.forecastFrom+1).map((v,i)=>`${i===0?'M':'L'}${xOf(i)},${yOf(v)}`).join(' ');
+  svg += `<path d="${lineAct}" fill="none" stroke="${accentC}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+  // line forecast (dashed)
+  const lineFc = CF.balance.slice(CF.forecastFrom).map((v,i)=>`${i===0?'M':'L'}${xOf(CF.forecastFrom+i)},${yOf(v)}`).join(' ');
+  svg += `<path d="${lineFc}" fill="none" stroke="${accentC}" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+  // dots + x labels
+  CF.balance.forEach((v,i)=>{
+    const fc = i>=CF.forecastFrom;
+    svg += `<circle class="bal-dot" cx="${xOf(i)}" cy="${yOf(v)}" r="4" fill="${fc?'var(--surface)':''+accentC}" stroke="${accentC}" stroke-width="2" data-tip="${CF.months[i]}: AED ${fmtK(v)}${fc?' (forecast)':''}"/>`;
+    svg += `<text x="${xOf(i)}" y="${H-10}" font-size="10" text-anchor="middle" fill="${textC}">${CF.months[i]}</text>`;
+  });
+  svg += '</svg>';
+  const existing = wrap.querySelector('svg');
+  if(existing) existing.remove();
+  wrap.insertAdjacentHTML('afterbegin', svg);
+
+  // hover
+  const tip = document.getElementById('balTip'); if(!tip) return;
+  wrap.querySelectorAll('.bal-dot').forEach(dot=>{
+    dot.style.cursor='pointer';
+    dot.addEventListener('mouseenter',function(e){
+      tip.textContent=this.dataset.tip; tip.style.opacity='1';
+    });
+    dot.addEventListener('mousemove',function(e){
+      const r=wrap.getBoundingClientRect();
+      let x=e.clientX-r.left+12,y=e.clientY-r.top-36;
+      if(x+160>r.width) x=e.clientX-r.left-160;
+      tip.style.left=x+'px'; tip.style.top=y+'px';
+    });
+    dot.addEventListener('mouseleave',()=>{ tip.style.opacity='0'; });
+  });
+}
+
+function fmtK(v){ return v>=1000?(v/1000).toFixed(1)+'k':String(v); }
+
+// ── ACTIONS VIEW ────────────────────────────────────────────────────────────
+function renderActionsView(){
+  let tasks = allTasks();
+  const f = state.filter;
+  if(f==='done') tasks=tasks.filter(t=>t.status==='done');
+  else if(f==='overdue') tasks=tasks.filter(t=>t.status!=='done'&&t.due&&t.due<today());
+  else tasks=tasks.filter(t=>t.status!=='done');
+
+  if(!tasks.length){
+    document.getElementById('content').innerHTML='<div style="text-align:center;padding:48px;color:var(--fg-muted)"><div style="font-size:32px;margin-bottom:10px">✅</div><div style="font-size:15px;font-weight:600;color:var(--fg);margin-bottom:6px">No tasks here</div><div>Change filter or add tasks to a project.</div></div>';
+    return;
+  }
+  let html = `<div class="table-wrap"><div class="tbl-hdr"><div>Task</div><div>Owner</div><div>Project</div><div>Due</div></div>`;
+  tasks.forEach(t=>{
+    const done=t.status==='done';
+    const late=!done&&t.due&&t.due<today();
+    const [ac,initials]=avatarFor(t.owner||'');
+    html+=`<div class="tbl-row" onclick="selectTask('${t.id}')">
+      <div class="tbl-task-name ${done?'struck':''}" style="display:flex;align-items:center;gap:8px">
+        <div class="chk ${done?'done':''}" style="flex-shrink:0" onclick="toggleDone(event,'${t.id}')"></div>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.name)}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:12px">
+        ${t.owner?`<div class="avatar" style="background:${ac};width:20px;height:20px;font-size:9px">${initials}</div><span>${esc(t.owner)}</span>`:'<span style="color:var(--fg-muted)">—</span>'}
+      </div>
+      <div style="font-size:12px;color:var(--fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t._proj)}</div>
+      <div class="task-due ${late?'late':''}" style="font-size:12px">${t.due?fmtDate(t.due):'—'}</div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('content').innerHTML=html;
+}
+
+// ── TASK DETAIL ─────────────────────────────────────────────────────────────
+function selectTask(id){
+  state.selectedTaskId=id; render();
+  const found=findTask(id); if(!found){ closePanel(); return; }
+  const {task:t,section:s,proj:p}=found;
+  const done=t.status==='done';
+  const [ac,initials]=avatarFor(t.owner||'');
+  const late=!done&&t.due&&t.due<today();
+  document.getElementById('panelTitle').textContent=t.name;
+  document.getElementById('panelBody').innerHTML=`
+    <div class="field-row"><span class="field-lbl">Status</span>
+      <div><span class="sbadge ${done?'badge-done':'badge-open'}">${done?'✓ Completed':'○ Open'}</span></div>
+    </div>
+    <div class="field-row"><span class="field-lbl">Owner</span>
+      <div class="field-val" style="display:flex;align-items:center;gap:6px">
+        ${t.owner?`<div class="avatar" style="background:${ac}">${initials}</div>${esc(t.owner)}`:'<span style="color:var(--fg-muted)">Unassigned</span>'}
+      </div>
+    </div>
+    <div class="field-row"><span class="field-lbl">Due</span>
+      <div class="field-val ${late?'task-due late':''}">${t.due?fmtDate(t.due)+daysLabel(t.due):'Not set'}</div>
+    </div>
+    <div class="field-row"><span class="field-lbl">Project</span><div class="field-val">${esc(p.name)}</div></div>
+    <div class="field-row"><span class="field-lbl">Section</span><div class="field-val" style="font-size:12px;color:var(--fg-muted)">${esc(s.name)}</div></div>
+    ${t.notes?`<div><div class="field-lbl" style="margin-bottom:6px">Notes</div><div class="field-notes">${esc(t.notes)}</div></div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+      <button class="btn ${done?'btn-ghost':'btn-primary'}" onclick="toggleDonePanel('${t.id}')">${done?'Reopen':'Mark Complete'}</button>
+      <button class="btn btn-ghost" onclick="openEditModal('${t.id}')">Edit</button>
+      <button class="btn btn-ghost" style="color:var(--red);border-color:var(--red)" onclick="deleteTask('${t.id}')">Delete</button>
+    </div>`;
+  document.getElementById('detailPanel').classList.remove('closed');
+}
+
+function closePanel(){ state.selectedTaskId=null; document.getElementById('detailPanel').classList.add('closed'); }
+function toggleDone(e,id){ e.stopPropagation(); const f=findTask(id); if(!f) return; f.task.status=f.task.status==='done'?'open':'done'; save(); if(state.selectedTaskId===id)selectTask(id); else render(); }
+function toggleDonePanel(id){ const f=findTask(id); if(!f) return; f.task.status=f.task.status==='done'?'open':'done'; save(); render(); selectTask(id); }
+function toggleSection(id){ const el=document.getElementById('sb_'+id); if(el) el.classList.toggle('col'); }
+
+// ── MODALS ──────────────────────────────────────────────────────────────────
+function openAddModal(projId,secId){
+  const pid=projId||state.projectId;
+  const proj=DB.projects.find(p=>p.id===pid); if(!proj) return;
+  const secOptions=proj.sections.map(s=>`<option value="${s.id}" ${s.id===secId?'selected':''}>${s.name}</option>`).join('');
+  showModal('Add Task',`
+    <div class="fg"><label class="fl">Task name *</label><input class="fi" id="m-name" placeholder="What needs to be done?" autofocus></div>
+    <div class="fg"><label class="fl">Section</label><select class="fs" id="m-sec">${secOptions}</select></div>
+    <div class="fg"><label class="fl">Owner</label><select class="fs" id="m-owner">
+      <option value="">Unassigned</option>
+      ${Object.keys(OWNERS).map(k=>`<option>${k}</option>`).join('')}
+      <option value="other">Other...</option>
+    </select></div>
+    <div class="fg" id="other-wrap" style="display:none"><label class="fl">Owner name</label><input class="fi" id="m-owner-other" placeholder="Name"></div>
+    <div class="fg"><label class="fl">Due date</label><input class="fi" id="m-due" type="date"></div>
+    <div class="fg"><label class="fl">Notes</label><textarea class="fta" id="m-notes" placeholder="Additional context..."></textarea></div>
+  `,()=>submitAdd(pid),'Add Task');
+  document.getElementById('m-owner').addEventListener('change',function(){
+    document.getElementById('other-wrap').style.display=this.value==='other'?'block':'none';
+  });
+}
+
+function submitAdd(pid){
+  const name=document.getElementById('m-name').value.trim();
+  if(!name){ document.getElementById('m-name').style.borderColor='var(--red)'; return false; }
+  const ownerSel=document.getElementById('m-owner').value;
+  const owner=ownerSel==='other'?(document.getElementById('m-owner-other').value.trim()||''):ownerSel;
+  const proj=DB.projects.find(p=>p.id===pid);
+  const sec=proj&&proj.sections.find(s=>s.id===document.getElementById('m-sec').value);
+  if(!sec) return false;
+  sec.tasks.push({id:'task_'+Date.now(),name,owner,status:'open',due:document.getElementById('m-due').value||null,notes:document.getElementById('m-notes').value.trim()});
+  save(); render(); return true;
+}
+
+function openEditModal(taskId){
+  const found=findTask(taskId); if(!found) return;
+  const {task:t}=found;
+  const ok=Object.keys(OWNERS).includes(t.owner);
+  showModal('Edit Task',`
+    <div class="fg"><label class="fl">Task name</label><input class="fi" id="m-name" value="${esc(t.name)}"></div>
+    <div class="fg"><label class="fl">Owner</label><select class="fs" id="m-owner">
+      <option value="">Unassigned</option>
+      ${Object.keys(OWNERS).map(k=>`<option ${t.owner===k?'selected':''}>${k}</option>`).join('')}
+      <option value="other" ${!ok&&t.owner?'selected':''}>Other...</option>
+    </select></div>
+    <div class="fg" id="other-wrap" style="display:${!ok&&t.owner?'block':'none'}"><label class="fl">Owner name</label><input class="fi" id="m-owner-other" value="${esc(!ok&&t.owner?t.owner:'')}"></div>
+    <div class="fg"><label class="fl">Due date</label><input class="fi" id="m-due" type="date" value="${t.due||''}"></div>
+    <div class="fg"><label class="fl">Notes</label><textarea class="fta" id="m-notes">${esc(t.notes||'')}</textarea></div>
+  `,()=>submitEdit(taskId),'Save Changes');
+  document.getElementById('m-owner').addEventListener('change',function(){
+    document.getElementById('other-wrap').style.display=this.value==='other'?'block':'none';
+  });
+}
+
+function submitEdit(taskId){
+  const name=document.getElementById('m-name').value.trim();
+  if(!name){ document.getElementById('m-name').style.borderColor='var(--red)'; return false; }
+  const ownerSel=document.getElementById('m-owner').value;
+  const owner=ownerSel==='other'?(document.getElementById('m-owner-other').value.trim()||''):ownerSel;
+  const f=findTask(taskId); if(!f) return false;
+  Object.assign(f.task,{name,owner,due:document.getElementById('m-due').value||null,notes:document.getElementById('m-notes').value.trim()});
+  save(); render(); selectTask(taskId); return true;
+}
+
+function deleteTask(taskId){
+  const f=findTask(taskId); if(!f) return;
+  f.section.tasks=f.section.tasks.filter(t=>t.id!==taskId);
+  save(); closePanel(); render();
+}
+
+function showModal(title,bodyHtml,onSubmit,submitLabel='Save'){
+  document.getElementById('modal').innerHTML=`
+    <div class="modal-title">${title}</div>
+    <div id="modal-fields">${bodyHtml}</div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="handleModalSubmit()">${submitLabel}</button>
+    </div>`;
+  window._modalSubmit=onSubmit;
+  document.getElementById('modalOverlay').hidden=false;
+  setTimeout(()=>{ const f=document.getElementById('modal').querySelector('input,select,textarea'); if(f) f.focus(); },50);
+}
+function handleModalSubmit(){ if(window._modalSubmit&&window._modalSubmit()!==false) closeModal(); }
+function closeModal(){ document.getElementById('modalOverlay').hidden=true; window._modalSubmit=null; }
+
+// ── UTILS ───────────────────────────────────────────────────────────────────
+function today(){ return new Date().toISOString().slice(0,10); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtDate(d){ if(!d) return ''; const [y,m,day]=d.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1]+' '+parseInt(day); }
+function daysLabel(d){ const diff=Math.round((new Date(d)-new Date(today()))/(864e5)); if(diff<0) return ` · ${Math.abs(diff)}d overdue`; if(diff===0) return ' · Today'; if(diff===1) return ' · Tomorrow'; return ` · ${diff}d`; }
+
+document.getElementById('modalOverlay').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ if(!document.getElementById('modalOverlay').hidden) closeModal(); else closePanel(); } });
+window.addEventListener('resize',()=>{ if(state.subview==='cashflow') renderCashFlowView(); });
+
+render();
+</script>
+
+</body></html>
